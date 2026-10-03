@@ -24,17 +24,17 @@ def main():
     parser.add_argument("user_prompt", type=str, help="User prompt")
     args = parser.parse_args()
 
+    messages = [
+        {"role": "user", "content": args.user_prompt},
+    ]
+
     response = client.chat.completions.create(
         model="openrouter/free",
-        messages=[
-            {
-                "role": "user",
-                "content": args.user_prompt,
-            }
-        ],
+        messages=messages,
     )
+
     if response.usage is None:
-        raise RuntimeError("No usage data in the response.")
+        raise RuntimeError("No usage data in the response. The API request likely failed.")
 
     print(f"Prompt tokens: {response.usage.prompt_tokens}")
     print(f"Response tokens: {response.usage.completion_tokens}")
